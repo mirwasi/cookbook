@@ -1,19 +1,18 @@
-struct dinic
+struct FlowDinic
 {
     int n, m, s, t, head, tail, ne;
     #define data int // change int -> LL if needed
     data data_inf;
     int *to, *next, *last, *d, *q, *now, *flow;
     data *cap;
-    dinic() {}
-    dinic(int xn, int xm) // INITIALIZE WITH THIS
+    FlowDinic() {}
+    FlowDinic(int xn, int xm) // INITIALIZE WITH THIS
     {
         n = xn+10; m = xm+10; ne = 0;
         to = new int[m]; cap = new data[m]; next = new int[m], flow = new int[m];
         d = new int[n]; q = new int[n+n]; now = new int[n]; last = new int[n];
         fill(last, last+n, -1);
     }
-    
     void clear() { ne = 0; fill(last, last+n, -1); }
     inline void add_edge(int u, int v, data uv, data vu = 0)
     {
@@ -66,18 +65,15 @@ struct dinic
         }
         return 0;
     }
-
     data maxflow(int source, int sink)
     {
         s = source; t = sink;
         data f = 0, x;
         data_inf = numeric_limits<data>::max();
         ms(flow,0);
-        
         while (bfs())
         {
             rep(i,n) now[i] = last[i];
-            
             while (true)
             {
                 x = dfs(s, data_inf);
@@ -87,6 +83,5 @@ struct dinic
         }
         return f;
     }
-
 } G;
 
